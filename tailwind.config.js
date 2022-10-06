@@ -1,13 +1,23 @@
 // tailwind.config.js
 module.exports = {
-	mode: 'jit',
 	content: [
 		'./pages/**/*.{js,ts,jsx,tsx}',
 		'./components/**/*.{js,ts,jsx,tsx}',
 	],
 	theme: {
 		extend: {
-			colors: {},
+			colors: {
+				'cionic-sky': '#E9F4FC',
+				'cionic-cyan': '#44B3E3',
+				'cionic-navy': '#374B70',
+				'cionic-graphite': '#1E201F',
+				'cionic-gray': '#656565',
+				'cionic-lime': '#BEDF2F',
+			},
+		},
+		screens: {
+			md: '760px',
+			// => @media (min-width: 760px) { ... }
 		},
 	},
 	plugins: [],
