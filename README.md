@@ -4,15 +4,12 @@
 
 ## About
 
-### This is a [react nextjs app](https://nextjs.org/) written in typsecript and using [twin.macro](https://www.npmjs.com/package/twin.macro) for styling
+### This is a [react nextjs app](https://nextjs.org/) written in [typescript](https://www.typescriptlang.org/) and using [twin.macro](https://www.npmjs.com/package/twin.macro) for styling
 
-The form page is located at `pages/index.tsx`.
-
+The form page is located at `pages/index.tsx`
 Global styles can be found at `styles/GlobalStyles.tsx`, and custom theme settings can be found in `tailwind.config.js`
-
-A mock API endpoint is set up in `pages/api/form.ts`.
-
-The `eslint` and `prettier` files in the root directory are just there for linting and auto-formatting.
+A mock API endpoint is set up in `pages/api/form.ts`
+The `eslint` and `prettier` files in the root directory are just there for linting and auto-formatting
 
 ## Project Setup
 
