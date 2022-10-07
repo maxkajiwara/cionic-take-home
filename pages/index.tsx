@@ -85,10 +85,9 @@ const FormPage: NextPage = () => {
 		}
 
 		const response = await fetch(endpoint, options)
-		const result = await response.json()
 
 		// Reset fetching state and update status
-		if (result.data === 'Success') {
+		if (response.status === 200) {
 			setStatus((status) => ({ ...status, fetching: false, success: true }))
 		} else {
 			setStatus((status) => ({

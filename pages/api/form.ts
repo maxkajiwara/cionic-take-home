@@ -6,7 +6,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
 	// Simulate network latency
 	setTimeout(() => {
 		// Trigger a 400 response
-		if (body.forceError) {
+		if (body.sizeUpper === '4.00' || body.sizeLower === '4.00') {
 			return res.status(400).json({ data: 'Invalid data' })
 		}
 
