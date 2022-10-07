@@ -2,7 +2,8 @@ import type { NextPage } from 'next'
 import Head from 'next/head'
 import { useState, ChangeEvent, FormEvent } from 'react'
 import tw from 'twin.macro'
-import { RadioOption } from '../components/RadioOption'
+import RadioOption from '../components/RadioOption'
+import NumberOptions from '../components/NumberOptions'
 
 export interface FormState {
 	color: 'graphite' | 'navy'
@@ -18,6 +19,7 @@ interface Status {
 }
 
 const FormPage: NextPage = () => {
+	// Form state
 	const [formData, setFormData] = useState<FormState>({
 		color: 'graphite',
 		leg: 'left',
@@ -25,13 +27,14 @@ const FormPage: NextPage = () => {
 		sizeLower: 0,
 	})
 
+	// Status state
 	const [status, setStatus] = useState<Status>({
 		fetching: false,
 		success: false,
 		error: '',
 	})
 
-	// Handle change to form input
+	// Handle change to radio input
 	const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
 		setFormData((formData) => ({ ...formData, [event.target.name]: event.target.value }))
 	}
@@ -40,25 +43,21 @@ const FormPage: NextPage = () => {
 	const handleInput = (event: ChangeEvent<HTMLInputElement>) => {
 		const value = handleDecimalValue(event.target.value)
 
+		// Update state
 		setFormData((formData) => ({
 			...formData,
 			[event.target.name]: value,
 		}))
 
+		// Update error message
 		if (value > 50) {
-			setStatus((status) => ({
-				...status,
-				error: 'Value must be between 0 and 50',
-			}))
+			setStatus((status) => ({ ...status, error: 'Value must be between 0 and 50' }))
 		} else {
-			setStatus((status) => ({
-				...status,
-				error: '',
-			}))
+			setStatus((status) => ({ ...status, error: '' }))
 		}
 	}
 
-	// Handle string validation for number input field
+	// Handle string validation for number input
 	const handleDecimalValue = (value: string) => {
 		// Remove extra leading zeroes and allow up to two decimal digits
 		const regex = /(?!0\d)([0-9]*[.]{0,1}[0-9]{0,2})/s
@@ -69,9 +68,12 @@ const FormPage: NextPage = () => {
 
 	// Handle the submit event on form submit
 	const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
-		// Stop the form from submitting and refreshing the page
 		event.preventDefault()
 
+		// Set fetching state
+		setStatus((status) => ({ ...status, fetching: true, error: '' }))
+
+		// pages/api/form.ts
 		const endpoint = '/api/form'
 		const JSONdata = JSON.stringify(formData)
 		const options = {
@@ -82,11 +84,10 @@ const FormPage: NextPage = () => {
 			body: JSONdata,
 		}
 
-		setStatus((status) => ({ ...status, fetching: true, error: '' }))
-
 		const response = await fetch(endpoint, options)
 		const result = await response.json()
 
+		// Reset fetching state and update status
 		if (result.data === 'Success') {
 			setStatus((status) => ({ ...status, fetching: false, success: true }))
 		} else {
@@ -103,6 +104,7 @@ const FormPage: NextPage = () => {
 		setStatus((status) => ({ ...status, success: false }))
 	}
 
+	// And here's our component!
 	return (
 		<PageContainer>
 			<Head>
@@ -116,77 +118,39 @@ const FormPage: NextPage = () => {
 					<Options>
 						<Option>
 							<OptionHeader>1. Select your color:</OptionHeader>
-							<RadioBody>
-								<RadioOption
-									name='color'
-									value='graphite'
-									color='graphite'
-									handleChange={handleChange}
-									checked={formData.color === 'graphite'}
-								/>
-
-								<RadioOption
-									name='color'
-									value='navy'
-									color='navy'
-									handleChange={handleChange}
-									checked={formData.color === 'navy'}
-								/>
-							</RadioBody>
+							<RadioOption
+								props={{
+									name: 'color',
+									values: ['graphite', 'navy'],
+									checked: formData.color,
+									handleChange,
+								}}
+							/>
 						</Option>
 
 						<Option>
 							<OptionHeader>2. Select which leg:</OptionHeader>
-							<RadioBody>
-								<RadioOption
-									name='leg'
-									value='left'
-									handleChange={handleChange}
-									checked={formData.leg === 'left'}
-								/>
-
-								<RadioOption
-									name='leg'
-									value='right'
-									handleChange={handleChange}
-									checked={formData.leg === 'right'}
-								/>
-							</RadioBody>
+							<RadioOption
+								props={{
+									name: 'leg',
+									values: ['left', 'right'],
+									checked: formData.leg,
+									handleChange,
+								}}
+							/>
 						</Option>
 
 						<Option>
 							<OptionHeader>3. Input your size:</OptionHeader>
-							<InputBody>
-								<InputLabel htmlFor='sizeUpper'>Upper Leg (Inches)</InputLabel>
-								<Input
-									type='number'
-									name='sizeUpper'
-									id='sizeUpper'
-									value={formData.sizeUpper || ''}
-									min='0'
-									max='50'
-									step='any'
-									placeholder='inches'
-									onChange={handleInput}
-									autoComplete='off'
-									required
-								/>
-
-								<InputLabel htmlFor='sizeLower'>Lower Leg (inches)</InputLabel>
-								<Input
-									type='number'
-									name='sizeLower'
-									id='sizeLower'
-									value={formData.sizeLower || ''}
-									min='0'
-									max='50'
-									step='any'
-									placeholder='inches'
-									onChange={handleInput}
-									autoComplete='off'
-									required
-								/>
-							</InputBody>
+							<NumberOptions
+								props={{
+									options: [
+										{ label: 'Upper Leg (Inches)', name: 'sizeUpper', value: formData.sizeUpper },
+										{ label: 'Lower Leg (Inches)', name: 'sizeLower', value: formData.sizeLower },
+									],
+									handleInput,
+								}}
+							/>
 						</Option>
 					</Options>
 
@@ -279,77 +243,6 @@ const OptionHeader = tw.div`
 		text-sm
 		leading-[22px]
 		tracking-[-0.09em]
-	)
-`
-
-const RadioBody = tw.ul`
-	flex
-	flex-row
-	w-full
-	h-full
-	pt-[18px]
-	px-3
-	pb-7
-
-	md:(
-		p-[14px]
-	)
-`
-
-const InputBody = tw.ul`
-	flex
-	flex-col
-	items-center
-	w-full
-	h-full
-	pt-3
-
-	md:(
-		pt-2
-	)
-`
-
-const InputLabel = tw.label`
-	text-lg
-	font-medium
-	tracking-[-0.08em]
-
-	md:(
-		text-sm
-	)
-`
-
-const Input = tw.input`
-	w-3/5
-	h-12
-	border
-	border-cionic-gray-400
-	rounded
-	mt-[3px]
-	mb-2
-	text-center
-	text-lg
-	font-medium
-	leading-3
-	tracking-tighter
-
-	placeholder:(
-		text-cionic-gray-600
-	)
-
-	focus-visible:(
-		outline-none
-		ring
-	)
-
-	out-of-range:(
-		border-red-600
-	)
-
-	md:(
-		w-28
-		h-[38px]
-		text-sm
 	)
 `
 

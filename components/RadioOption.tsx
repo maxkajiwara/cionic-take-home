@@ -2,39 +2,65 @@ import { ChangeEvent } from 'react'
 import tw, { styled, TwStyle } from 'twin.macro'
 
 type Props = {
-	name: string
-	value: string
-	color?: Color
-	checked: boolean
-	handleChange: (event: ChangeEvent<HTMLInputElement>) => void
+	props: {
+		name: string
+		values: string[]
+		handleChange: (event: ChangeEvent<HTMLInputElement>) => void
+		checked: string
+	}
 }
 
-export const RadioOption: React.FC<Props> = ({ name, value, color, checked, handleChange }) => {
-	return (
-		<RadioWrapper>
-			<RadioButton
-				className='peer'
-				type='radio'
-				name={name}
-				value={value}
-				id={name + value}
-				onChange={handleChange}
-				checked={checked}
-			/>
-			<RadioLabel htmlFor={name + value}>
-				<Circle color={color} checked={checked}>
-					{name !== 'color' && value.charAt(0).toUpperCase()}
-				</Circle>
-				{value.charAt(0).toUpperCase() + value.slice(1)}
-			</RadioLabel>
-		</RadioWrapper>
+// This format should be easier to adapt to additional color options
+const RadioOption: React.FC<Props> = ({ props: { name, values, handleChange, checked } }) => (
+	<RadioBody>
+		{values.map((value) => {
+			const selfChecked = value === checked
+
+			return (
+				<PeerWrapper key={name + value}>
+					<RadioButton
+						className='peer'
+						type='radio'
+						name={name}
+						value={value}
+						id={name + value}
+						onChange={handleChange}
+						checked={selfChecked}
+					/>
+					<RadioLabel htmlFor={name + value}>
+						<Circle color={value} checked={selfChecked}>
+							{name !== 'color' && value.charAt(0).toUpperCase()}
+						</Circle>
+						{value.charAt(0).toUpperCase() + value.slice(1)}
+					</RadioLabel>
+				</PeerWrapper>
+			)
+		})}
+	</RadioBody>
+)
+
+export default RadioOption
+
+const RadioBody = tw.ul`
+	flex
+	flex-row
+	w-full
+	h-full
+	pt-[18px]
+	px-3
+	pb-7
+
+	md:(
+		p-[14px]
 	)
-}
+`
 
-const RadioWrapper = tw.li`
-flex
-w-full
-h-full
+// Necessary replacement for React.Fragment due to peer class
+const PeerWrapper = tw.div`
+	flex
+	w-full
+	h-full
+	flex-wrap
 `
 
 // Screen-reader-only:
@@ -86,17 +112,17 @@ active:(
 )
 `
 
-// Color options
-type Color = 'graphite' | 'navy'
-
-const colorVariants: Record<Color, TwStyle> = {
+// Add colors here to extend options
+// (Needs some additional styling for flex-wrapping but you get the idea)
+const colorVariants: Record<string, TwStyle> = {
 	graphite: tw`bg-cionic-graphite`,
 	navy: tw`bg-cionic-navy`,
+	// red: tw`bg-red-900`,
 }
 
 interface CircleProps {
-	color?: Color
-	checked?: boolean
+	color: string
+	checked: boolean
 }
 
 const Circle = styled.div<CircleProps>(({ color, checked }) => [
@@ -112,16 +138,16 @@ const Circle = styled.div<CircleProps>(({ color, checked }) => [
 	font-medium
 	text-cionic-graphite
 `,
-	color ? colorVariants[color] : tw`border border-cionic-gray-600`,
+	colorVariants[color] || tw`border border-cionic-gray-600`,
 	!checked &&
-		(color
+		(colorVariants[color]
 			? tw`
-	w-[25px]
-	h-[25px]
-	mt-2
-`
+		w-[25px]
+		h-[25px]
+		mt-2
+	`
 			: tw`
-	border-0
-	text-cionic-gray-600
-`),
+		border-0
+		text-cionic-gray-600
+	`),
 ])
