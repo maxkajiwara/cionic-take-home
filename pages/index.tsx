@@ -8,8 +8,8 @@ import NumberOptions from '../components/NumberOptions'
 export interface FormState {
 	color: 'graphite' | 'navy'
 	leg: 'left' | 'right'
-	sizeUpper: number
-	sizeLower: number
+	sizeUpper: string
+	sizeLower: string
 }
 
 interface Status {
@@ -23,8 +23,8 @@ const FormPage: NextPage = () => {
 	const [formData, setFormData] = useState<FormState>({
 		color: 'graphite',
 		leg: 'left',
-		sizeUpper: 0,
-		sizeLower: 0,
+		sizeUpper: '',
+		sizeLower: '',
 	})
 
 	// Status state

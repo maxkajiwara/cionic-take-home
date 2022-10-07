@@ -3,7 +3,7 @@ import tw from 'twin.macro'
 
 type Props = {
 	props: {
-		options: { name: string; label: string; value: number }[]
+		options: { name: string; label: string; value: string }[]
 		handleInput: (event: ChangeEvent<HTMLInputElement>) => void
 	}
 }
