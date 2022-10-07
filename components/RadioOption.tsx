@@ -1,7 +1,7 @@
 import { ChangeEvent } from 'react'
 import tw, { styled, TwStyle } from 'twin.macro'
 
-interface Props {
+type Props = {
 	name: string
 	value: string
 	color?: Color
@@ -25,7 +25,7 @@ export const RadioOption: React.FC<Props> = ({ name, value, color, checked, hand
 				<Circle color={color} checked={checked}>
 					{name !== 'color' && value.charAt(0).toUpperCase()}
 				</Circle>
-				{checked && value.charAt(0).toUpperCase() + value.slice(1)}
+				{value.charAt(0).toUpperCase() + value.slice(1)}
 			</RadioLabel>
 		</RadioWrapper>
 	)
@@ -56,20 +56,33 @@ p-1.5
 border
 border-b-[5px]
 text-sm
+leading-[18px]
 tracking-tighter
+text-cionic-sky
 cursor-pointer
 
 // Having two border-color utilities in one scope was causing an editor warning for duplicate property: --tw-border-opacity
-// Temporary solution: Moved one of them out of the peer-checked scope
-border-cionic-gray
+// Harmless solution: Moved one of them out of the peer-checked scope
+border-cionic-gray-600
 border-opacity-0
 
 peer-checked:(
 	border-b-cionic-cyan
+	text-black
 )
 
-peer-focus:(
+peer-focus-visible:(
 	ring
+)
+
+hover:(
+	bg-blue-50
+	shadow-md
+	text-cionic-gray-500
+)
+
+active:(
+	bg-cionic-sky
 )
 `
 
@@ -97,8 +110,9 @@ const Circle = styled.div<CircleProps>(({ color, checked }) => [
 	items-center
 	text-[41px]
 	font-medium
+	text-cionic-graphite
 `,
-	color ? colorVariants[color] : tw`border border-cionic-gray`,
+	color ? colorVariants[color] : tw`border border-cionic-gray-600`,
 	!checked &&
 		(color
 			? tw`
@@ -108,6 +122,6 @@ const Circle = styled.div<CircleProps>(({ color, checked }) => [
 `
 			: tw`
 	border-0
-	text-cionic-gray
+	text-cionic-gray-600
 `),
 ])
