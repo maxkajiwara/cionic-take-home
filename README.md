@@ -8,6 +8,8 @@
 
 The form page is located at `pages/index.tsx`. Global styles can be found at `styles/GlobalStyles.tsx` and custom theme settings can be found in `tailwind.config.js`. A mock API endpoint is set up in `pages/api/form.ts`. The `eslint` and `prettier` files in the root directory are just there for linting and auto-formatting.
 
+The [Tailwind Twin IntelliSense VSCode extension](https://marketplace.visualstudio.com/items?itemName=lightyen.tailwindcss-intellisense-twin) makes it much easier to see what the tailwind utilities are doing. You can hover over any style to see the underlying CSS.
+
 ## Project Setup
 
 Install the dependencies, build the app, and start the server with your choice of yarn or npm
