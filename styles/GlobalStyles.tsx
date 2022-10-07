@@ -12,9 +12,24 @@ import tw, { theme, GlobalStyles as BaseStyles } from 'twin.macro'
 const CustomStyles = createGlobalStyle`
   body {
     ${tw`antialiased`};
-		background-color: ${theme`colors[cionic-sky]`}
+		${tw`focus:outline-none`};
+		background-color: ${theme`colors[cionic-sky]`};
+
+		html, body {
+			overflow-x: hidden
+		}
 		
-  }
+		/* Chrome, Safari, Edge, Opera */
+		input::-webkit-outer-spin-button,
+		input::-webkit-inner-spin-button {
+		-webkit-appearance: none;
+		margin: 0;
+		}
+		/* Firefox */
+		input[type=number] {
+			-moz-appearance: textfield;
+		}
+	}
 `
 
 const GlobalStyles = () => (
