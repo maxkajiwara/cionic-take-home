@@ -1,8 +1,8 @@
 # Cionic Web UI Homework
 
-### [Instructions and Layouts](https://docs.google.com/document/d/1d0upM8NlhQ3LbN5I2EnSRLmNYtwTYTKnRRhRIHHnwqo)
-
 ## About
+
+### [Instructions and Layouts](https://docs.google.com/document/d/1d0upM8NlhQ3LbN5I2EnSRLmNYtwTYTKnRRhRIHHnwqo)
 
 ### This is a [react nextjs app](https://nextjs.org/) written in [typescript](https://www.typescriptlang.org/) and using [twin.macro](https://www.npmjs.com/package/twin.macro) for styling
 
