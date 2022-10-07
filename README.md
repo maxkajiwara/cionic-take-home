@@ -40,16 +40,16 @@ If you wish to see a non-200 response state, enter `4.00` into either of the siz
 
 ## Accessibility
 
-Hidden under the color & leg styling is a radio button for each type; this accomplishes two goals: 1. Enable keyboard navigation, 2. Allow screen readers to understand the layout for accessibility purposes.
+Hidden under the color & leg styling is a radio button for each type; this accomplishes two goals: 1. Enable keyboard navigation; 2. Allow screen readers to understand the layout for accessibility purposes.
 
 ### This form is fully keyboard-navigable:
 
 - Use `tab` & `shift+tab` to navigate between each option
 
-- Use arrow keys to select either color or leg type
+- Use the arrow keys to select either color or leg type
 
-- Use number keys & `.` for size inputs, plus up & down arrow keys to increment or decrement the value by 1
+- Use number keys & `.` for size inputs plus up & down arrow keys to increment or decrement the value by 1
 
 ---
 
-### Let me know if you have any questions! I'd be happy to demo the app and explain my code 😄
+### Let me know if you have any questions! I'd be happy to demo the app and explain my code on a call 😄
